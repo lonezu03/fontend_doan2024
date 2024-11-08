@@ -1,0 +1,267 @@
+Để tổ chức một dự án **ASP.NET Core 7** đầy đủ, bạn nên chia thành các lớp (layer) theo kiến trúc N-tier (hoặc kiến trúc phân lớp) để quản lý rõ ràng giữa các thành phần. Các lớp chính thường bao gồm **API Layer**, **Service Layer**, **Repository Layer**, và **Data Access Layer**. Dưới đây là cách tổ chức cấu trúc dự án trong Visual Studio với các thư mục, classes, interfaces và dependency injections.
+
+### 1. **Tạo Solution và Các Dự Án Con (Project)**
+
+1. Mở **Visual Studio** và chọn **Create a new project**.
+2. Chọn **ASP.NET Core Web API** và đặt tên, ví dụ `ClothingStore.Api`. Chọn **.NET 7** làm framework.
+3. Sau khi tạo xong, tạo thêm các dự án mới (project) trong cùng Solution:
+   - **ClothingStore.Core** (Class Library): chứa các models, DTOs, interfaces và các business logic cơ bản.
+   - **ClothingStore.Data** (Class Library): chứa các entities và các class liên quan đến truy cập dữ liệu.
+   - **ClothingStore.Services** (Class Library): chứa logic của services, nơi xử lý các nghiệp vụ chính.
+   - **ClothingStore.Repository** (Class Library): chứa các repository tương tác với cơ sở dữ liệu.
+
+### 2. **Cấu trúc thư mục và lớp cho từng dự án**
+
+#### **ClothingStore.Core**
+
+Thư mục này sẽ chứa các **Entities**, **DTOs**, và **Interfaces**:
+
+- **Entities**: Chứa các class đại diện cho các bảng trong cơ sở dữ liệu, như `Product`, `Category`, `User`, `Order`.
+- **DTOs**: Chứa các class chỉ định dữ liệu chuyển giao (Data Transfer Object) cho các API, chẳng hạn `ProductDto`, `OrderDto`.
+- **Interfaces**: Chứa các interface định nghĩa các phương thức cho service và repository.
+
+Ví dụ:
+```plaintext
+ClothingStore.Core
+│
+└───Entities
+│     └───Product.cs
+│     └───Category.cs
+│     └───User.cs
+│     └───Order.cs
+│
+└───DTOs
+│     └───ProductDto.cs
+│     └───OrderDto.cs
+│
+└───Interfaces
+      └───IProductService.cs
+      └───IProductRepository.cs
+      └───ICategoryService.cs
+```
+
+#### **ClothingStore.Data**
+
+Dự án này sẽ có thư mục:
+
+- **Context**: Chứa `ApplicationDbContext` kế thừa từ `DbContext`, dùng để truy cập cơ sở dữ liệu.
+- **Configurations**: Chứa cấu hình chi tiết cho các entity khi ánh xạ với bảng SQL.
+
+```plaintext
+ClothingStore.Data
+│
+└───Context
+│     └───ApplicationDbContext.cs
+│
+└───Configurations
+      └───ProductConfiguration.cs
+      └───CategoryConfiguration.cs
+```
+
+**Example: ApplicationDbContext**
+```csharp
+using Microsoft.EntityFrameworkCore;
+using ClothingStore.Core.Entities;
+
+namespace ClothingStore.Data.Context
+{
+    public class ApplicationDbContext : DbContext
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        }
+    }
+}
+```
+
+#### **ClothingStore.Repository**
+
+Thư mục này sẽ chứa các repository:
+
+- **Repositories**: Chứa các class thực hiện interface từ `Core.Interfaces` để thực hiện CRUD.
+- **UnitOfWork**: Tập trung các repository và quản lý chúng, cung cấp một điểm truy cập duy nhất cho các transaction.
+
+```plaintext
+ClothingStore.Repository
+│
+└───Repositories
+│     └───ProductRepository.cs
+│     └───CategoryRepository.cs
+│
+└───UnitOfWork
+      └───IUnitOfWork.cs
+      └───UnitOfWork.cs
+```
+
+**Example: ProductRepository**
+```csharp
+using ClothingStore.Core.Entities;
+using ClothingStore.Core.Interfaces;
+using ClothingStore.Data.Context;
+using Microsoft.EntityFrameworkCore;
+
+namespace ClothingStore.Repository.Repositories
+{
+    public class ProductRepository : IProductRepository
+    {
+        private readonly ApplicationDbContext _context;
+
+        public ProductRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<IEnumerable<Product>> GetAllAsync()
+        {
+            return await _context.Products.ToListAsync();
+        }
+
+        // Implement other CRUD methods...
+    }
+}
+```
+
+#### **ClothingStore.Services**
+
+Thư mục này sẽ chứa các service xử lý nghiệp vụ và logic:
+
+- **Services**: Chứa các service xử lý logic business và gọi tới repository khi cần thiết.
+
+```plaintext
+ClothingStore.Services
+│
+└───Services
+      └───ProductService.cs
+      └───CategoryService.cs
+```
+
+**Example: ProductService**
+```csharp
+using ClothingStore.Core.Interfaces;
+using ClothingStore.Core.Entities;
+
+namespace ClothingStore.Services.Services
+{
+    public class ProductService : IProductService
+    {
+        private readonly IProductRepository _productRepository;
+
+        public ProductService(IProductRepository productRepository)
+        {
+            _productRepository = productRepository;
+        }
+
+        public async Task<IEnumerable<Product>> GetAllProductsAsync()
+        {
+            return await _productRepository.GetAllAsync();
+        }
+
+        // Implement other service methods...
+    }
+}
+```
+
+#### **ClothingStore.Api**
+
+API layer này là nơi chứa các controller để xử lý yêu cầu HTTP từ người dùng.
+
+- **Controllers**: Chứa các controller, mỗi controller tương ứng với một resource của API.
+
+```plaintext
+ClothingStore.Api
+│
+└───Controllers
+      └───ProductController.cs
+      └───CategoryController.cs
+```
+
+**Example: ProductController**
+```csharp
+using Microsoft.AspNetCore.Mvc;
+using ClothingStore.Core.Interfaces;
+using ClothingStore.Core.Entities;
+
+namespace ClothingStore.Api.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProductController : ControllerBase
+    {
+        private readonly IProductService _productService;
+
+        public ProductController(IProductService productService)
+        {
+            _productService = productService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        {
+            var products = await _productService.GetAllProductsAsync();
+            return Ok(products);
+        }
+
+        // Implement other endpoints...
+    }
+}
+```
+
+### 3. **Thiết lập Dependency Injection (DI) trong `Program.cs`**
+
+Mở file `Program.cs` trong `ClothingStore.Api` và cấu hình DI để các service và repository được Inject:
+
+```csharp
+using ClothingStore.Data.Context;
+using ClothingStore.Core.Interfaces;
+using ClothingStore.Repository.Repositories;
+using ClothingStore.Services.Services;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configure DbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Register repositories and services
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
+```
+
+### 4. **Migrations và Database**
+
+1. Mở Package Manager Console và chạy:
+    ```bash
+    Add-Migration InitialCreate
+    Update-Database
+    ```
+2. Migrations sẽ tạo cơ sở dữ liệu và các bảng trong SQL Server theo mô hình entity đã định nghĩa.
+
+### 5. **Kiểm thử API**
+
+Dùng Postman hoặc Swagger (tự động được tích hợp trong ASP.NET Core) để thử nghiệm các endpoint từ controller như `GET /api/products`.
+
+---
+
+Với cấu trúc này, dự án sẽ có tổ chức rõ ràng và dễ bảo trì nhờ vào việc phân chia các phần tử độc lập như controller, service, repository và data context.

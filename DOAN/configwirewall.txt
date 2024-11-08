@@ -1,0 +1,35 @@
+Để cấu hình lại tường lửa cho phép truy cập từ xa vào SQL Server, bạn có thể làm theo các bước sau để mở cổng SQL Server mặc định (1433) trên máy chủ Windows:
+
+### 1. **Mở Windows Firewall**
+   - Mở **Control Panel**.
+   - Đi tới **System and Security** > **Windows Defender Firewall**.
+   - Chọn **Advanced settings** ở bên trái.
+
+### 2. **Tạo Luật Inbound cho Cổng 1433**
+   - Trong **Windows Defender Firewall with Advanced Security**, chọn **Inbound Rules** ở bên trái.
+   - Chọn **New Rule...** ở bên phải để mở trình hướng dẫn tạo luật mới.
+   - Chọn **Port** và nhấn **Next**.
+
+### 3. **Chọn TCP và Cổng 1433**
+   - Chọn **TCP**.
+   - Trong mục **Specific local ports**, nhập **1433** (hoặc cổng mà SQL Server đang sử dụng nếu đã được thay đổi) và nhấn **Next**.
+
+### 4. **Cho phép Kết Nối (Allow the connection)**
+   - Chọn **Allow the connection** và nhấn **Next**.
+
+### 5. **Áp dụng Luật cho Các Profile**
+   - Chọn các profile mà bạn muốn áp dụng (Domain, Private, Public).
+   - Nhấn **Next**.
+
+### 6. **Đặt Tên Cho Luật**
+   - Đặt tên cho luật, ví dụ: **SQL Server Port 1433**.
+   - Nhấn **Finish** để hoàn thành.
+
+### 7. **Kiểm Tra SQL Server Configuration Manager**
+   Đảm bảo rằng SQL Server đang được cấu hình để lắng nghe trên cổng 1433:
+   - Mở **SQL Server Configuration Manager**.
+   - Mở **SQL Server Network Configuration** > **Protocols for [Tên_instance]**.
+   - Kiểm tra rằng **TCP/IP** đang được **Enabled**.
+   - Nhấp đúp vào **TCP/IP**, và kiểm tra **TCP Port** dưới mục **IPAll** có được đặt là **1433** hay không.
+
+Sau khi thực hiện xong, SQL Server sẽ có thể chấp nhận kết nối từ xa thông qua cổng 1433. Bạn có thể kiểm tra bằng cách sử dụng một công cụ SQL Client hoặc truy cập từ máy khác với cấu hình đã cho.

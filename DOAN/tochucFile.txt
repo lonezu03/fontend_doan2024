@@ -1,0 +1,36 @@
+ApiWebQuanAoSolution
+├── ApiWebQuanAo.Web               # Project chính chứa các API Controller
+│   ├── Controllers                 # Chứa các API Controller
+│   │   ├── ProductsController.cs   # Controller để quản lý các API của Product
+│   ├── Models                      # Chứa các model request/response nếu cần
+│   ├── appsettings.json            # File cấu hình
+│   ├── Program.cs                  # Điểm bắt đầu của ứng dụng
+│   └── Startup.cs                  # Cấu hình ứng dụng, thêm các dịch vụ vào DI
+│
+├── WQA.DAL                         # Data Access Layer (DAL)
+│   └── (Có thể có các class riêng nếu cần thiết)
+│
+├── WQA.InfrastructureEF            # Chứa lớp hạ tầng cho Entity Framework
+│   ├── Data
+│   │   └── ClothingStoreContext.cs  # DbContext kết nối với database
+│   ├── Entities                    # Chứa các Entity (các bảng trong database)
+│   │   ├── Product.cs              # Entity đại diện cho bảng Product
+│   │   ├── Category.cs             # Entity đại diện cho bảng Category
+│   │   └── ...                     # Các entity khác
+│
+├── WQA.Repository                  # Repository Layer, chứa các repository để truy cập dữ liệu
+│   ├── Interfaces                  # Chứa các Interface của repository
+│   │   └── IProductRepository.cs   # Interface cho Product repository
+│   ├── Repositories                # Chứa các class repository triển khai các Interface
+│       └── ProductRepository.cs    # Repository triển khai cho Product
+│
+├── WQA.Service                     # Service Layer, chứa các logic nghiệp vụ
+│   ├── Interfaces                  # Chứa các Interface của service
+│   │   └── IProductService.cs      # Interface cho Product service
+│   ├── Services                    # Chứa các class service triển khai các Interface
+│       └── ProductService.cs       # Service triển khai cho Product
+│
+└── WQA.DTOs                        # Data Transfer Objects (DTOs) nếu cần
+    ├── ProductDto.cs               # DTO cho Product
+    ├── CategoryDto.cs              # DTO cho Category
+    └── ...                         # Các DTO khác

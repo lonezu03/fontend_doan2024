@@ -140,7 +140,7 @@ CREATE TABLE Orders (
     id INT PRIMARY KEY,
 	user_id INT,
     shipping_id INT,
-    date DATE NOT NULL,
+    datecreate DATE NOT NULL,
     FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (shipping_id) REFERENCES Shipping(id)
 );

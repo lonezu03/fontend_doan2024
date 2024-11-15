@@ -1,31 +1,37 @@
-// features/products/productSlice.js
-import { createSlice } from '@reduxjs/toolkit';
-import { fetchProducts } from './productThunks';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const initialState = {
-  items: [],
-  status: 'idle',
-  error: null,
-};
+// Async thunk để thêm sản phẩm
+export const addProduct = createAsyncThunk(
+  "products/addProduct",
+  async (productData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/api/products", productData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const productSlice = createSlice({
-  name: 'products',
-  initialState,
-  reducers: {
-    // Reducers thường (nếu có) sẽ được khai báo ở đây
+  name: "products",
+  initialState: {
+    items: [],
+    status: null,
   },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProducts.pending, (state) => {
-        state.status = 'loading';
+      .addCase(addProduct.pending, (state) => {
+        state.status = "loading";
       })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.items = action.payload;
+      .addCase(addProduct.fulfilled, (state, action) => {
+        state.items.push(action.payload);
+        state.status = "succeeded";
       })
-      .addCase(fetchProducts.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
+      .addCase(addProduct.rejected, (state) => {
+        state.status = "failed";
       });
   },
 });

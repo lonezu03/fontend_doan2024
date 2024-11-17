@@ -16,3 +16,18 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
+
+export const loginThunk = createAsyncThunk(
+  'auth/login',
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('http://localhost:5224/api/users/login', {
+        email,
+        password,
+      });
+      return response.data; // Trả về dữ liệu (token, user)
+    } catch (error) {
+      return rejectWithValue(error.response.data?.message || 'Login failed');
+    }
+  }
+);

@@ -1,216 +1,63 @@
-ASP.NET Core 8 cung cấp các công cụ mạnh mẽ để quản lý **JWT (JSON Web Token)** tương tự như trong Java. Thông qua các thư viện như **Microsoft.AspNetCore.Authentication.JwtBearer**, bạn có thể dễ dàng triển khai chức năng tạo và quản lý token cho các yêu cầu đăng nhập. Dưới đây là hướng dẫn chi tiết.
-
----
-
-## **1. Cấu hình dự án**
-### **Thêm thư viện JWT**
-Thêm gói NuGet cần thiết trong dự án ASP.NET Core 8:
-```bash
-dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
-dotnet add package System.IdentityModel.Tokens.Jwt
-```
-
----
-
-## **2. Cấu hình JWT trong `appsettings.json`**
-Thêm thông tin về JWT:
-```json
+public async Task<LoginResponse> LoginAsync(string email, string password)
 {
-  "Jwt": {
-    "Key": "MySuperSecretKey12345", // Khóa bí mật (phải mạnh trong môi trường thực tế)
-    "Issuer": "MyApp",              // Người phát hành token
-    "Audience": "MyAppUsers",       // Đối tượng sử dụng token
-    "ExpiresInMinutes": 30          // Thời gian sống của token
-  }
-}
-```
-
----
-
-## **3. Cấu hình Authentication trong `Program.cs`**
-Thêm cấu hình JWT:
-```csharp
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-
-var builder = WebApplication.CreateBuilder(args);
-
-// Đọc cấu hình JWT từ appsettings.json
-var jwtConfig = builder.Configuration.GetSection("Jwt");
-var key = Encoding.UTF8.GetBytes(jwtConfig["Key"]);
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
+    // Lấy người dùng theo email
+    var user = await _userRepository.GetByEmailAsync(email);
+    
+    // Kiểm tra thông tin đăng nhập
+    if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtConfig["Issuer"],
-        ValidAudience = jwtConfig["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(key)
+        return null; // Thông tin không hợp lệ
+    }
+
+    // Tạo token JWT
+    var token = GenerateJwtToken(user);
+
+    // Trả về thông tin người dùng kèm token
+    return new LoginResponse
+    {
+        User = new UserResponse
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Username = user.Username
+        },
+        Token = token.Token,
+        Expiration = token.Expiration
     };
-});
-
-builder.Services.AddAuthorization();
-
-var app = builder.Build();
-
-// Thêm middleware Authentication và Authorization
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
-```
-
----
-
-## **4. Tạo Controller xử lý đăng nhập**
-### **Tạo DTO cho đăng nhập**
-```csharp
-public class LoginRequest
-{
-    public string Username { get; set; }
-    public string Password { get; set; }
 }
 
-public class LoginResponse
+// Điều chỉnh để trả về JWT kèm thông tin người dùng
+private LoginResponse GenerateJwtToken(User user)
 {
-    public string Token { get; set; }
-    public DateTime Expiration { get; set; }
+    var jwtConfig = _configuration.GetSection("Jwt");
+    var key = Encoding.UTF8.GetBytes(jwtConfig["Key"]);
+
+    // Tạo claims
+    var claims = new[]
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim(ClaimTypes.Name, user.Username),
+        new Claim("UserId", user.Id.ToString()) // Thêm claim tùy chỉnh nếu cần
+    };
+
+    // Signing credentials
+    var signingKey = new SymmetricSecurityKey(key);
+    var credentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+
+    // Token expiration
+    var expires = DateTime.UtcNow.AddMinutes(double.Parse(jwtConfig["ExpiresInMinutes"]));
+
+    var token = new JwtSecurityToken(
+        issuer: jwtConfig["Issuer"],
+        audience: jwtConfig["Audience"],
+        claims: claims,
+        expires: expires,
+        signingCredentials: credentials);
+
+    return new LoginResponse
+    {
+        Token = new JwtSecurityTokenHandler().WriteToken(token),
+        Expiration = expires
+    };
 }
-```
-
-### **Tạo Controller**
-```csharp
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-
-[Route("api/[controller]")]
-[ApiController]
-public class AuthController : ControllerBase
-{
-    private readonly IConfiguration _configuration;
-
-    public AuthController(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-
-    [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginRequest request)
-    {
-        // Xác thực người dùng (giả lập)
-        if (request.Username != "admin" || request.Password != "password")
-        {
-            return Unauthorized(new { message = "Invalid credentials" });
-        }
-
-        // Tạo token
-        var token = GenerateJwtToken(request.Username);
-
-        return Ok(token);
-    }
-
-    private LoginResponse GenerateJwtToken(string username)
-    {
-        var jwtConfig = _configuration.GetSection("Jwt");
-        var key = Encoding.UTF8.GetBytes(jwtConfig["Key"]);
-
-        // Tạo claims
-        var claims = new[]
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, username),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.Name, username)
-        };
-
-        // Ký token
-        var signingKey = new SymmetricSecurityKey(key);
-        var credentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-
-        // Thời gian sống của token
-        var expires = DateTime.UtcNow.AddMinutes(double.Parse(jwtConfig["ExpiresInMinutes"]));
-
-        var token = new JwtSecurityToken(
-            issuer: jwtConfig["Issuer"],
-            audience: jwtConfig["Audience"],
-            claims: claims,
-            expires: expires,
-            signingCredentials: credentials);
-
-        return new LoginResponse
-        {
-            Token = new JwtSecurityTokenHandler().WriteToken(token),
-            Expiration = expires
-        };
-    }
-}
-```
-
----
-
-## **5. Kiểm tra xác thực**
-Bảo vệ các endpoint bằng `[Authorize]`:
-```csharp
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-[Route("api/[controller]")]
-[ApiController]
-public class TestController : ControllerBase
-{
-    [HttpGet("secured")]
-    [Authorize]
-    public IActionResult Secured()
-    {
-        var username = User.Identity.Name;
-        return Ok(new { message = $"Hello {username}, you are authorized!" });
-    }
-}
-```
-
----
-
-## **6. Chạy và kiểm tra**
-1. **Gửi yêu cầu đăng nhập:**
-   - **URL:** `POST /api/auth/login`
-   - **Body:**
-     ```json
-     {
-       "username": "admin",
-       "password": "password"
-     }
-     ```
-   - **Kết quả:**
-     ```json
-     {
-       "token": "<JWT_TOKEN>",
-       "expiration": "2024-10-17T10:00:00Z"
-     }
-     ```
-
-2. **Sử dụng token:**
-   - Gửi token trong header `Authorization: Bearer <JWT_TOKEN>` khi truy cập các endpoint được bảo vệ (`/api/test/secured`).
-
----
-
-### **Mở rộng**
-- **Lưu token đã bị thu hồi (logout):** Lưu trong cơ sở dữ liệu để vô hiệu hóa token khi đăng xuất.
-- **Thêm claims cho vai trò/quyền hạn:** Tích hợp với vai trò người dùng trong cơ sở dữ liệu.
-- **Sử dụng Refresh Token:** Tạo hệ thống làm mới token khi token hết hạn.
-
-insert into novel(id_novel,description_novel,image_novel,name_novel,status_novel)
-values("heheh","Hay điên",LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\pexels-karolina-grabowska-4495705.jpg'),"Trảm thằn","CONTINUE");

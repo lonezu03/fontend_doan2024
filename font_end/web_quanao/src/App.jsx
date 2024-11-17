@@ -19,6 +19,8 @@ function App() {
         <Route path="/dangky" element={<Dangky />} />
         <Route path="/dangnhap" element={<Dangnhap />} />
         <Route path="/giohang" element={<Giohanglon />} />
+        <Route path="/shop" element={<Shop />} />
+        
         <Route path="/" element={<Shop />} />
       </Routes>
     

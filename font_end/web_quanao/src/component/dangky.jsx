@@ -1,19 +1,21 @@
-import  { useState } from 'react';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser } from '../redux/user/authThunks';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
+    username: '',
     email: '',
-    name: '',
-    address: '',
-    phoneNumber: '',
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
+  const { isLoading, error } = useSelector((state) => state.auth);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-  // Hàm xử lý khi nhập liệu vào các input
+
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({
@@ -22,11 +24,11 @@ const RegisterForm = () => {
     });
   };
 
-  // Hàm xử lý khi submit form
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Xử lý logic đăng ký ở đây
-    console.log('Registering account with data:', formData);
+
+
+    dispatch(registerUser(formData));
   };
 
   return (
@@ -40,9 +42,9 @@ const RegisterForm = () => {
             Name
           </label>
           <input
-            id="name"
+            id="username"
             type="text"
-            value={formData.name}
+            value={formData.username}
             onChange={handleChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Enter your name"
@@ -67,7 +69,7 @@ const RegisterForm = () => {
         </div>
 
         {/* Address */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="address">
             Address
           </label>
@@ -80,10 +82,10 @@ const RegisterForm = () => {
             placeholder="Enter your address"
             required
           />
-        </div>
+        </div> */}
 
         {/* Phone Number */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">
             Phone Number
           </label>
@@ -96,7 +98,7 @@ const RegisterForm = () => {
             placeholder="Enter your phone number"
             required
           />
-        </div>
+        </div> */}
 
         {/* Password */}
         <div className="mb-6">
@@ -104,32 +106,38 @@ const RegisterForm = () => {
             Password
           </label>
           <div className="relative">
-          <input
-            id="password"
-            type={showPassword ? 'text' : 'password'}
-            value={formData.password}
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            placeholder="Enter your password"
-            required
-          />
-           <button
+            <input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              value={formData.password}
+              onChange={handleChange}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              placeholder="Enter your password"
+              required
+            />
+            <button
               type="button"
               onClick={toggleShowPassword}
               className="absolute inset-y-0 right-0 px-3 text-gray-700 focus:outline-none"
             >
               {showPassword ? 'Hide' : 'Show'}
             </button>
-            </div>
+          </div>
         </div>
+
+        {/* Error message */}
+        {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
 
         {/* Submit button */}
         <div className="flex items-center justify-center">
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className={`${
+              isLoading ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-700'
+            } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+            disabled={isLoading}
           >
-            Create Account
+            {isLoading ? 'Registering...' : 'Create Account'}
           </button>
         </div>
       </form>

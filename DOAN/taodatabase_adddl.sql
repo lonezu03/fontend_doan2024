@@ -1,4 +1,6 @@
-﻿CREATE DATABASE ClothingStore;
+﻿drop database ClothingStore
+
+CREATE DATABASE ClothingStore;
 GO
 
 USE ClothingStore;
@@ -53,7 +55,7 @@ CREATE TABLE Variant (
 
 CREATE TABLE Image (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    url VARCHAR(255) NOT NULL,
+    url VARBINARY(MAX) NOT NULL,
     variant_id INT,
     FOREIGN KEY (variant_id) REFERENCES Variant(id)
 );
@@ -122,18 +124,20 @@ INSERT INTO Category (name) VALUES ('T-Shirts'), ('Jeans'), ('Jackets');
 -- Thêm dữ liệu vào bảng Product
 INSERT INTO Product (name, material_id, gender_id) 
 VALUES ('T-Shirt 1', 1, 1), ('Jacket 1', 2, 2);
-
+select * from Product
 -- Thêm dữ liệu vào bảng Variant
 INSERT INTO Variant (product_id, color_id, size_id, category_id) 
-VALUES (1, 1, 1, 1), (2, 2, 2, 2);
-
+VALUES (2, 1, 1, 1), (2, 2, 2, 2);
+select * from Variant
 -- Thêm dữ liệu vào bảng Image
-INSERT INTO Image (url, variant_id) 
-VALUES ('http://example.com/image1.jpg', 1), ('http://example.com/image2.jpg', 2);
-
+INSERT INTO Image (url, variant_id)
+VALUES (
+    (SELECT * FROM OPENROWSET(BULK 'F:\Anh\me\anhvu.jpg', SINGLE_BLOB) AS img),
+    9  -- variant_id, sử dụng id của Variant đã thêm
+);
 -- Thêm dữ liệu vào bảng Inventory
 INSERT INTO Inventory (variant_id, quantity) 
-VALUES (1, 100), (2, 50);
+VALUES (9, 100), (10, 50);
 
 -- Thêm dữ liệu vào bảng Users
 INSERT INTO Users (username, email, password) 
@@ -147,10 +151,12 @@ VALUES (1, '123 Main St', 'New York', 'USA'), (2, '456 Park Ave', 'Los Angeles',
 INSERT INTO Shipping (address_id, shipping_date) 
 VALUES (1, '2024-01-01'), (2, '2024-01-02');
 
+
 -- Thêm dữ liệu vào bảng Orders
 INSERT INTO Orders (user_id, shipping_id, date) 
 VALUES (1, 1, '2024-01-03'), (2, 2, '2024-01-04');
-
+select * from orders
+select * from Inventory
 -- Thêm dữ liệu vào bảng Order_Item
 INSERT INTO Order_Item (order_id, inventory_id) 
-VALUES (1, 1), (2, 2);
+VALUES (1, 4), (2, 5);

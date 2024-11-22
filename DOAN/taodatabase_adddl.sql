@@ -40,17 +40,25 @@ CREATE TABLE Product (
     FOREIGN KEY (material_id) REFERENCES Material(id),
     FOREIGN KEY (gender_id) REFERENCES Gender(id)
 );
+CREATE TABLE Description (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    title VARCHAR(50)  ,
+	content VARCHAR(200)  ,
+
+);
 
 CREATE TABLE Variant (
     id INT IDENTITY(1,1) PRIMARY KEY,
     product_id INT,
     color_id INT,
     size_id INT,
+	description_id INT,
     category_id INT,
     FOREIGN KEY (product_id) REFERENCES Product(id),
     FOREIGN KEY (color_id) REFERENCES Color(id),
     FOREIGN KEY (size_id) REFERENCES Size(id),
-    FOREIGN KEY (category_id) REFERENCES Category(id)
+    FOREIGN KEY (category_id) REFERENCES Category(id),
+	FOREIGN KEY (description_id) REFERENCES Description(id)
 );
 
 CREATE TABLE Image (
@@ -59,7 +67,7 @@ CREATE TABLE Image (
     variant_id INT,
     FOREIGN KEY (variant_id) REFERENCES Variant(id)
 );
-
+select * from image
 CREATE TABLE Inventory (
     id INT IDENTITY(1,1) PRIMARY KEY,
     variant_id INT,
@@ -160,3 +168,8 @@ select * from Inventory
 -- Thêm dữ liệu vào bảng Order_Item
 INSERT INTO Order_Item (order_id, inventory_id) 
 VALUES (1, 4), (2, 5);
+
+
+
+
+

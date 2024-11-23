@@ -1,61 +1,90 @@
-import { FaFacebookF, FaInstagram, FaFacebookMessenger } from 'react-icons/fa'; // Sử dụng react-icons để thêm biểu tượng social media
+import React from 'react';
+import { Facebook, Instagram, Message } from '@mui/icons-material';
+import { FaFacebookMessenger } from 'react-icons/fa'; // Import riêng biểu tượng từ react-icons
+import { Box, Container, Grid, IconButton, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-gray-200 py-8">
-      <div className="container mx-auto px-4">
+    <Box sx={{ backgroundColor: 'grey.900', color: 'grey.200', py: 6 }}>
+      <Container maxWidth="lg">
         {/* Thông tin dự án */}
-        <div className="text-center mb-6">
-          <p className="text-lg mb-4">
+        <Box textAlign="center" mb={4}>
+          <Typography variant="body1" gutterBottom>
             The starting point for your next project with Minimal UI Kit, built on the newest version of Material-UI ©, ready to be customized to your style.
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
         {/* Các mục menu */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-          <div>
-            <h3 className="text-lg font-bold mb-3">Minimal</h3>
-            <ul>
-              <li><a href="#" className="hover:text-white">About us</a></li>
-              <li><a href="#" className="hover:text-white">Contact us</a></li>
-              <li><a href="#" className="hover:text-white">FAQs</a></li>
-            </ul>
-          </div>
+        <Grid container spacing={4} textAlign={{ xs: 'center', md: 'left' }}>
+          <Grid item xs={12} md={4}>
+            <Typography variant="h6" gutterBottom>
+              Minimal
+            </Typography>
+            <Box>
+              <Link href="#" color="inherit" underline="hover" display="block">
+                About us
+              </Link>
+              <Link href="#" color="inherit" underline="hover" display="block">
+                Contact us
+              </Link>
+              <Link href="#" color="inherit" underline="hover" display="block">
+                FAQs
+              </Link>
+            </Box>
+          </Grid>
 
-          <div>
-            <h3 className="text-lg font-bold mb-3">Legal</h3>
-            <ul>
-              <li><a href="#" className="hover:text-white">Terms and Conditions</a></li>
-              <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
-            </ul>
-          </div>
+          <Grid item xs={12} md={4}>
+            <Typography variant="h6" gutterBottom>
+              Legal
+            </Typography>
+            <Box>
+              <Link href="#" color="inherit" underline="hover" display="block">
+                Terms and Conditions
+              </Link>
+              <Link href="#" color="inherit" underline="hover" display="block">
+                Privacy Policy
+              </Link>
+            </Box>
+          </Grid>
 
-          <div>
-            <h3 className="text-lg font-bold mb-3">Contact</h3>
-            <ul>
-              <li><a href="mailto:support@minimals.cc" className="hover:text-white">support@minimals.cc</a></li>
-              <li>© All rights reserved.</li>
-            </ul>
-          </div>
-        </div>
+          <Grid item xs={12} md={4}>
+            <Typography variant="h6" gutterBottom>
+              Contact
+            </Typography>
+            <Box>
+              <Link href="mailto:support@minimals.cc" color="inherit" underline="hover" display="block">
+                support@minimals.cc
+              </Link>
+              <Typography variant="body2">© All rights reserved.</Typography>
+            </Box>
+          </Grid>
+        </Grid>
 
         {/* Biểu tượng mạng xã hội */}
-        <div className="mt-8 text-center">
-          <h3 className="text-lg font-bold mb-3">Follow Us</h3>
-          <div className="flex justify-center space-x-4">
-            <a href="#" className="text-gray-400 hover:text-white transition">
-              <FaFacebookF size={24} />
-            </a>
-            <a href="#" className="text-gray-400 hover:text-white transition">
-              <FaInstagram size={24} />
-            </a>
-            <a href="#" className="text-gray-400 hover:text-white transition">
+        <Box mt={4} textAlign="center">
+          <Typography variant="h6" gutterBottom>
+            Follow Us
+          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+            {/* Sử dụng react-icons cho Facebook Messenger */}
+            <IconButton href="#" sx={{ color: 'grey.400', '&:hover': { color: 'white' } }}>
               <FaFacebookMessenger size={24} />
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
+            </IconButton>
+
+            {/* Instagram icon từ MUI */}
+            <IconButton href="#" sx={{ color: 'grey.400', '&:hover': { color: 'white' } }}>
+              <Instagram />
+            </IconButton>
+
+            {/* Message icon từ MUI (thay thế cho FacebookMessenger) */}
+            <IconButton href="#" sx={{ color: 'grey.400', '&:hover': { color: 'white' } }}>
+              <Message />
+            </IconButton>
+          </Box>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

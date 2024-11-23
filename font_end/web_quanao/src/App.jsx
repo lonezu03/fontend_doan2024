@@ -8,11 +8,11 @@ import Dangnhap from './component/trang/dangnhap.jsx';
 import ChitietSP from './component/trang/chitiet_sp.jsx';
 import Giohanglon from './component/trang/giohanglon.jsx';
 function App() {
- 
-  
+
+
   return (
     <Router>
-     <Routes>
+      <Routes>
 
         <Route path="/chitietsp" element={<ChitietSP />} />
         <Route path="/aboutus" element={<Aboutus />} />
@@ -20,10 +20,10 @@ function App() {
         <Route path="/dangnhap" element={<Dangnhap />} />
         <Route path="/giohang" element={<Giohanglon />} />
         <Route path="/shop" element={<Shop />} />
-        
+        <Route path="/footer2" element={<Shop />} />
         <Route path="/" element={<Shop />} />
       </Routes>
-    
+
     </Router>
   )
 }

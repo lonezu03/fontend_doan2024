@@ -3,7 +3,15 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // Thunk gọi API để lấy danh sách sản phẩm
-export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
-  const response = await axios.get('https://localhost:5001/api/products');
-  return response.data;
-});
+export const fetchProducts = createAsyncThunk(
+  "products/fetchProducts",
+  async (_,{rejectWithValue}) => {
+    try {
+      const response = await axios.get('http://localhost:5224/api/product'); // Thay đường dẫn API cho đúng
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+

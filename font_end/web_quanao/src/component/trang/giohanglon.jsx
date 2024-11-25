@@ -38,7 +38,7 @@ const giohanglon = ()=> {
       
     return (
         <div>
-            <Menu />
+                   <div className=' h-[120px] '><Menu  /></div>
             <div><Giohang cartItems={cartItems}/></div>
             <Footer2 />
         </div>

@@ -6,7 +6,7 @@ import Footer2 from '../footer2.jsx'
 function chitietSPComponent(){
     return(
         <>
-            <Menu />
+                   <div className=' h-[120px] '><Menu  /></div>
             <DetailItem />
             <Description />
             <Footer2 />

@@ -4287,11 +4287,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Projec\\Github\\backend_doan2024\\WebStore\\WebStore\\WebStore.csproj",
+      "projectUniqueName": "F:\\Projec\\Github\\fontend_doan2024\\DOAN\\temp\\WebStore\\WebStore\\WebStore.csproj",
       "projectName": "WebStore",
-      "projectPath": "F:\\Projec\\Github\\backend_doan2024\\WebStore\\WebStore\\WebStore.csproj",
+      "projectPath": "F:\\Projec\\Github\\fontend_doan2024\\DOAN\\temp\\WebStore\\WebStore\\WebStore.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "F:\\Projec\\Github\\backend_doan2024\\WebStore\\WebStore\\obj\\",
+      "outputPath": "F:\\Projec\\Github\\fontend_doan2024\\DOAN\\temp\\WebStore\\WebStore\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

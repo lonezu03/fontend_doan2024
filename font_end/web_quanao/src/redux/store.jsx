@@ -1,15 +1,15 @@
 // app/store.js
 import { configureStore } from '@reduxjs/toolkit';
-import productReducer from './products/productSlice';
 import authReducer from './user/authSlice';
 import loginReducer from './user/loginSlice';
+import  productReducer   from './products/productSlice';
+
 export const store = configureStore({
   reducer: {
-    products: productReducer,
-    // Thêm các reducer khác nếu có
+    
     auth: authReducer,
     login: loginReducer,
-
+    products: productReducer,
   },
 });
 export default store; // Export dưới dạng default export

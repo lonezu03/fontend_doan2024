@@ -1,7 +1,19 @@
-
+import  { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../redux/products/productThunks';
 
 const ProductCard = ({ product }) => {
   const { name, image, isOnSale, priceBeforeSale, priceAfterSale, colors } = product;
+  const dispatch = useDispatch();
+  const { items, status, error } = useSelector((state) => state.products);
+  
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+  
+  if (status === 'loading') return <p>Loading...</p>;
+  //console.log('Items:', items);
+  if (status === 'failed') return <p>Error: {error}</p>;
 
   return (
     <div className="border border-gray-300 rounded-lg p-4 text-center w-72 relative shadow-lg m-2">

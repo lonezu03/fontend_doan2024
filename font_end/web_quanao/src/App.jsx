@@ -14,7 +14,7 @@ function App() {
     <Router>
       <Routes>
 
-        <Route path="/chitietsp" element={<ChitietSP />} />
+        <Route path="/chitietsp/:id" element={<ChitietSP />} />
         <Route path="/aboutus" element={<Aboutus />} />
         <Route path="/dangky" element={<Dangky />} />
         <Route path="/dangnhap" element={<Dangnhap />} />

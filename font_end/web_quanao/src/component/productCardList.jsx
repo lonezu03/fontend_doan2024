@@ -1,8 +1,9 @@
 import  { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts } from '../redux/products/productThunks';
+import ProductCard from './productcard';
 
-const ProductList = () => {
+const ProductCardList = () => {
   const dispatch = useDispatch();
   const { items, status, error } = useSelector((state) => state.products);
 
@@ -14,15 +15,12 @@ const ProductList = () => {
   if (status === 'failed') return <p>Error: {error}</p>;
 
   return (
-    <div>
-      <h2>Product List</h2>
-      <ul>
-        {items.map((product) => (
-          <li key={product.id}>{product.name}</li> // Thay `name` bằng trường bạn cần
-        ))}
-      </ul>
+    <div className="flex flex-wrap justify-center">
+      {items.map((product) => (
+        <ProductCard key={product.id} product={product}  />
+      ))}
     </div>
   );
 };
 
-export default ProductList;
+export default ProductCardList;

@@ -1,6 +1,6 @@
 import  { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addProduct } from "../redux/productSlice"; // Giả sử có action trong productSlice
+import { addProduct } from "../redux/products/productSlice"; // Giả sử có action trong productSlice
 
 const AddProductForm = () => {
   const dispatch = useDispatch();

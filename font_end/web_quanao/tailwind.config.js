@@ -6,6 +6,17 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: "#4CAF50",  // Custom primary color
+        secondary: "#388E3C",  // Custom secondary color
+      },
+      container: {
+        center: true,  // Centers the container
+        padding: {
+          DEFAULT: "1rem",  // Default padding
+          sm: "3rem",  // Padding for small screens
+        },
+      },
       keyframes: {
         glow: {
           '0%, 100%': { transform: 'translateX(-50%) scale(1)', opacity: '0.5' },

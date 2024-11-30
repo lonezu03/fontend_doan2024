@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "7WRnYX1PRHw=",
+  "dgSpecHash": "lGsD/xi4uDucjyETrqRIZoUxreG58GJXwk81NAymEvW+XuHuZ3CmA0U4gdodA9AFWoUfMys5sr0+sg4iyTeMkQ==",
   "success": true,
-  "projectFilePath": "F:\\Projec\\Github\\fontend_doan2024\\DOAN\\temp\\WebStore\\WebStore\\WebStore.csproj",
+  "projectFilePath": "D:\\font-end\\fontend_doan2024\\DOAN\\temp\\WebStore\\WebStore\\WebStore.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\automapper\\10.1.0\\automapper.10.1.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.0\\automapper.extensions.microsoft.dependencyinjection.8.1.0.nupkg.sha512",

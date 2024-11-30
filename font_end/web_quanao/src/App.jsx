@@ -7,11 +7,13 @@ import Dangky from './component/trang/dangky.jsx';
 import Dangnhap from './component/trang/dangnhap.jsx';
 import ChitietSP from './component/trang/chitiet_sp.jsx';
 import Giohanglon from './component/trang/giohanglon.jsx';
+import Home from './component/trang/home.jsx';
 function App() {
 
 
   return (
     <Router>
+
       <Routes>
 
         <Route path="/chitietsp" element={<ChitietSP />} />
@@ -21,7 +23,7 @@ function App() {
         <Route path="/giohang" element={<Giohanglon />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/footer2" element={<Shop />} />
-        <Route path="/" element={<Shop />} />
+        <Route path="/" element={<Home />} />
       </Routes>
 
     </Router>

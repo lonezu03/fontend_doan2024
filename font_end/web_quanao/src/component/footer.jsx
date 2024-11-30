@@ -1,61 +1,104 @@
-import { FaFacebookF, FaInstagram } from 'react-icons/fa';
-import { SiZalo } from 'react-icons/si';
+import React from "react";
+import logo from "../assets/logo.png";
+import footer from "../assets/footer2.jpg";
+import { FaInstagram, FaLocationArrow, FaMobileAlt } from "react-icons/fa";
+
+const FooterImg = {
+  backgroundImage: `url(${footer})`,
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "cover",
+  height: "100%",
+  width: "100%",
+};
+
+const FooterLinks = [
+  {
+    title: "Home",
+    link: "/#",
+  },
+  {
+    title: "Shop",
+    link: "/#",
+  },
+  {
+    title: "Contact",
+    link: "/#",
+  },
+  {
+    title: "New",
+    link: "/#",
+  },
+];
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white py-8">
-      <div className="container mx-auto px-4">
-        {/* Thông tin giới thiệu */}
-        <div className="mb-4">
-          <p>
-            The starting point for your next project with Minimal UI Kit, built on the newest version of Material-UI ©, ready to be customized to your style.
-          </p>
-        </div>
+    <div style={FooterImg} className="mb-20">
+      <div className="container mx-auto py-10 px-5">
+        <div data-aos="zoom-in"
+          className="grid md:grid-cols-3 gap-8">
+          {/* Company Details */}
+          <div className="flex flex-col items-start">
+            <div className="flex items-center gap-3 mb-5">
+              <img
+                src={logo}
+                alt="Logo"
+                className="w-12 h-12 object-contain"
+              />
+              <h1 className="text-xl sm:text-2xl font-bold text-black">
+                V&Mshop
+              </h1>
+            </div>
+            <p className="text-black">Thank you for stopping by my place.</p>
+          </div>
 
-        {/* Liên kết nhanh */}
-        <div className="mb-4">
-          <h2 className="text-lg font-bold">Minimal</h2>
-          <ul>
-            <li><a href="#about" className="text-white">About us</a></li>
-            <li><a href="#contact" className="text-white">Contact us</a></li>
-            <li><a href="#faqs" className="text-white">FAQs</a></li>
-          </ul>
-        </div>
+          {/* Footer Links */}
+          <div>
+            <h2 className="text-lg sm:text-xl font-bold mb-4 text-black">
+              Important Links
+            </h2>
+            <ul className="space-y-3">
+              {FooterLinks.map((link) => (
+                <li
+                  key={link.title}
+                  className="cursor-pointer text-black hover:text-primary hover:translate-x-1 transition duration-300"
+                >
+                  {link.title}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        {/* Thông tin pháp lý */}
-        <div className="mb-4">
-          <h2 className="text-lg font-bold">Legal</h2>
-          <ul>
-            <li><a href="#terms" className="text-white">Terms and conditions</a></li>
-            <li><a href="#privacy" className="text-white">Privacy policy</a></li>
-          </ul>
-        </div>
-
-        {/* Thông tin liên hệ */}
-        <div className="mb-4">
-          <h2 className="text-lg font-bold">Contact</h2>
-          <p>support@minimals.cc</p>
-        </div>
-
-        {/* Biểu tượng mạng xã hội */}
-        <div className="flex space-x-4">
-          <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-            <FaFacebookF className="text-white hover:text-blue-500" />
-          </a>
-          <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-            <FaInstagram className="text-white hover:text-pink-500" />
-          </a>
-          <a href="https://zalo.me" target="_blank" rel="noopener noreferrer">
-            <SiZalo className="text-white hover:text-blue-500" />
-          </a>
-        </div>
-
-        {/* Bản quyền */}
-        <div className="mt-4">
-          <p>© All rights reserved.</p>
+          {/* Social Links and Contact */}
+          <div>
+            <h2 className="text-lg sm:text-xl font-bold mb-4 text-black">
+              Connect With Us
+            </h2>
+            <div className="flex items-center gap-4 mb-5">
+              <a href="#" className="text-3xl hover:text-primary">
+                <FaInstagram />
+              </a>
+              <a href="#" className="text-3xl hover:text-primary">
+                <FaInstagram />
+              </a>
+              <a href="#" className="text-3xl hover:text-primary">
+                <FaInstagram />
+              </a>
+            </div>
+            <div className="space-y-3 text-black">
+              <div className="flex items-center gap-3">
+                <FaLocationArrow />
+                <p>Nodia, Utra Pradesh</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <FaMobileAlt />
+                <p>012345679</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </footer>
+    </div>
   );
 };
 

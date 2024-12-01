@@ -5,16 +5,14 @@ const ProductCard = ({ product }) => {
   const sizes = product.sizes?.$values || [];
   const images = product.images?.$values || [];
   const navigate = useNavigate();
-
+  //console.log(product)
   // Hàm xử lý hình ảnh
   const getImageSrc = (image) => {
-    // Nếu URL bắt đầu bằng chuỗi Base64
-    if (!image.url.startsWith("data:image")) {
-      return `data:image/jpeg;base64,${image.url}`;
-    }
-    return image.url;
-  };
+    //  URL bắt đầu bằng chuỗi Base64
+    
   const handleOnClick = () => {
+    //alert(product.id.toString());
+
     navigate(`/chitietsp/${product.id}`);
 };
   return (
@@ -35,6 +33,8 @@ const ProductCard = ({ product }) => {
         ) : (
           <p>No image available</p>
         )}
+        { <span className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-sm">Hot</span>}
+
       </div>
       {/* Tên sản phẩm */}
       <h2 className="text-lg font-bold mt-4 mb-2">{product.name}</h2>
@@ -57,8 +57,9 @@ const ProductCard = ({ product }) => {
 
       {/* Mô tả */}
       <div>
-        <h4 className="text-md font-semibold">Description:</h4>
-        <p className="text-sm text-gray-500">{product.description?.content || "No description available"}</p>
+        {/* <h4 className="text-md font-semibold">Description:</h4>
+        <p className="text-sm text-gray-500">{product.description?.content || "No description available"}</p> */}
+        <p className="text-sm text-gray-500">{product.price  || "No description available"}</p>
       </div>
     </div>
     </div>

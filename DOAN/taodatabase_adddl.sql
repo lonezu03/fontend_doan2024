@@ -173,3 +173,38 @@ VALUES (1, 4), (2, 5);
 
 
 
+-- bo sung 
+-- Thêm các cột bổ sung vào bảng hiện tại
+
+-- Bảng Product: Bổ sung thông tin giá, trạng thái, và mô tả
+ALTER TABLE Product
+ADD price DECIMAL(10, 2) NOT NULL DEFAULT 0, -- Giá sản phẩm
+    status VARCHAR(50) DEFAULT 'Available',  -- Trạng thái (Available, Out of Stock, etc.)
+    description NVARCHAR(500);               -- Mô tả sản phẩm chi tiết
+
+-- Bảng Variant: Bổ sung SKU (Stock Keeping Unit) và hình ảnh đại diện
+--ALTER TABLE Variant
+--ADD sku NVARCHAR(50) UNIQUE,                -- Mã SKU duy nhất cho mỗi biến thể
+  --  thumbnail VARBINARY(MAX);               -- Ảnh đại diện nhỏ của biến thể
+
+-- Bảng Inventory: Bổ sung cột để quản lý nhập hàng
+ALTER TABLE Inventory
+ADD restock_date DATE,                      -- Ngày nhập hàng gần nhất
+    min_quantity INT DEFAULT 10;            -- Số lượng tối thiểu cần giữ trong kho
+-- Bảng Users: Bổ sung vai trò và số điện thoại
+ALTER TABLE Users
+ADD role NVARCHAR(50) DEFAULT 'Customer',   -- Vai trò người dùng (Admin, Customer, etc.)
+    phone_number NVARCHAR(15);              -- Số điện thoại liên hệ
+
+-- Bảng Orders: Bổ sung tổng tiền và trạng thái đơn hàng
+ALTER TABLE Orders
+ADD total_amount DECIMAL(10, 2) DEFAULT 0,  -- Tổng tiền của đơn hàng
+    status NVARCHAR(50) DEFAULT 'Pending';  -- Trạng thái đơn hàng (Pending, Shipped, Completed, etc.)
+
+ALTER TABLE Order_item
+ADD nameitem varchar(100) , 
+    status NVARCHAR(50) DEFAULT 'Pending'; 
+
+
+      
+	

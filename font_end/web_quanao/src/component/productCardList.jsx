@@ -6,11 +6,11 @@ import ProductCard from './productcard';
 const ProductCardList = () => {
   const dispatch = useDispatch();
   const { items, status, error } = useSelector((state) => state.products);
-
   useEffect(() => {
     dispatch(fetchProducts());
-  }, [dispatch]);
+    
 
+  }, [dispatch]);
   if (status === 'loading') return <p>Loading...</p>;
   if (status === 'failed') return <p>Error: {error}</p>;
 

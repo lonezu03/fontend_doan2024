@@ -2,13 +2,15 @@ import axios from "axios";
 
 const API_BASE_URL = "http://localhost:5224/api";
 
-export const addToCart = async (variantId, quantity, price) => {
+export const addToCart = async (variantid, quantity, price) => {
   try {
     const token = localStorage.getItem("token");
-    console.log(token);
+    console.log('variantid:', variantid);  // Kiểm tra giá trị variantid
+    console.log('quantity:', quantity);    // Kiểm tra giá trị quantity
+    console.log('price:', price);          // Kiểm tra giá trị price
     const response = await axios.post(
       `${API_BASE_URL}/order/add-to-cart`,
-      { variantId, quantity, price },
+      { variantid, quantity, price },
       {
         headers: {
           Authorization: `Bearer ${token}`,

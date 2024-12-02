@@ -25,12 +25,12 @@ const ProductDetails = () => {
     console.log('Add to cart');
     dispatch(
       addToCartThunk({
-        productId: product.id,
-        quantity: quantity,
+        variantid: product.id,
+        quantity: parseInt(quantity,10),
         price: product.price,
       })
     );
-    console.log('Add to cart 2');
+    //console.log(quantity,product.id,product.price);
 
   };
   // Gọi API để lấy thông tin sản phẩm

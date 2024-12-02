@@ -1,80 +1,76 @@
-import  { useState,useEffect  } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
 import { loginThunk } from '../redux/user/authThunks';
-import { selectAuthStatus, selectAuthError ,selectAuthUser} from '../redux/user/loginSelectors';
+import { selectAuthStatus, selectAuthError } from '../redux/user/loginSelectors';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
 
+  const dispatch = useDispatch();
   const status = useSelector(selectAuthStatus);
   const error = useSelector(selectAuthError);
-  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
- // Xử lý ẩn/hiện mật khẩu
- const toggleShowPassword = () => {
-  setShowPassword(!showPassword);
-};
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await dispatch(loginThunk({ email, password }));
-
     if (result.meta.requestStatus === "fulfilled") {
-      navigate("/shop"); // Điều hướng sang trang Shop sau khi thành công
+      navigate("/shop");
     }
   };
-  
 
-  
   return (
-    <div className="max-w-md mx-auto mt-10 p-4 border rounded-md shadow-md">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="max-w-md mx-auto mt-10 p-6 border rounded-md shadow-md bg-white">
+      <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">Login</h1>
+      <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label className="block text-sm font-medium mb-1">Email</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+            placeholder="Enter your email"
+            required
           />
         </div>
-        <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-            Password
-          </label>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
           <div className="relative">
             <input
-              id="password"
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
               placeholder="Enter your password"
               required
             />
             <button
               type="button"
               onClick={toggleShowPassword}
-              className="absolute inset-y-0 right-0 px-3 text-gray-700 focus:outline-none"
+              className="absolute inset-y-0 right-3 flex items-center text-gray-600 hover:text-gray-800"
             >
-              {showPassword ? 'Hide' : 'Show'}
+              {showPassword ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
             </button>
           </div>
         </div>
-
-        {/* Forgot Password link */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex justify-end">
           <button
-            className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
             type="button"
+            className="text-sm text-blue-500 hover:underline"
           >
             Forgot Password?
           </button>
         </div>
-
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
@@ -83,7 +79,7 @@ const LoginForm = () => {
           {status === 'loading' ? 'Logging in...' : 'Login'}
         </button>
       </form>
-      {error && <p className="text-red-500 mt-4">{error}</p>}
+      {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
     </div>
   );
 };

@@ -7,9 +7,7 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   //console.log(product)
   // Hàm xử lý hình ảnh
-  const getImageSrc = (image) => {
-    //  URL bắt đầu bằng chuỗi Base64
-    
+ 
   const handleOnClick = () => {
     //alert(product.id.toString());
 
@@ -17,7 +15,6 @@ const ProductCard = ({ product }) => {
 };
   return (
     <div onClick={handleOnClick} style={{ cursor: 'pointer' }}>
-            <h3>{product.name}</h3>
             {/* Các thành phần khác của card */}
        
     <div className="border border-gray-300 rounded-lg p-4 text-center w-72 relative shadow-lg m-2">
@@ -26,7 +23,7 @@ const ProductCard = ({ product }) => {
       <div className="my-4">
         {images.length > 0 ? (
           <img
-            src={getImageSrc(images[0])} // Chuyển đổi Base64 thành URL hình ảnh
+            src={images[0].url} // Chuyển đổi Base64 thành URL hình ảnh
             alt={product.name}
             className="w-full h-auto rounded-lg"
           />
@@ -59,8 +56,10 @@ const ProductCard = ({ product }) => {
       <div>
         {/* <h4 className="text-md font-semibold">Description:</h4>
         <p className="text-sm text-gray-500">{product.description?.content || "No description available"}</p> */}
-        <p className="text-sm text-gray-500">{product.price  || "No description available"}</p>
+        <p className="font-bold text-lg">{product.price  || "No description available"} đ</p>
       </div>
+      <button className="bg-green-500 text-white px-5 py-2 rounded hover:bg-green-600 transition duration-300">Add to Cart</button>
+
     </div>
     </div>
   );

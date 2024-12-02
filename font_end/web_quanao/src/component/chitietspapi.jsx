@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { FaStar, FaCartPlus, FaHeart, FaShareAlt } from "react-icons/fa";
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from "react-router-dom";
+import { addToCartThunk } from "../redux/card/cartSlice";
+
 
 const ProductDetails = () => {
   const [product, setProduct] = useState(null); // Lưu trữ thông tin sản phẩm
@@ -10,12 +12,27 @@ const ProductDetails = () => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const { id } = useParams(); // Lấy id từ URL
+  const { id } = useParams(); 
+  const dispatch = useDispatch();
+
+  const cartState = useSelector((state) => state.cart);
+
 
   console.log("ID from URL trong:", id); // Kiểm tra giá trị id
 
   const url = `http://localhost:5224/api/product/${id}`;
+  const handleAddToCart = () => {
+    console.log('Add to cart');
+    dispatch(
+      addToCartThunk({
+        productId: product.id,
+        quantity: quantity,
+        price: product.price,
+      })
+    );
+    console.log('Add to cart 2');
 
+  };
   // Gọi API để lấy thông tin sản phẩm
   useEffect(() => {
     const fetchProduct = async () => {
@@ -162,7 +179,7 @@ const ProductDetails = () => {
         </div>
          {/* Nút Thêm vào giỏ hàng và Mua ngay */}
          <div className="mt-6 flex space-x-4">
-          <button className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded flex items-center">
+          <button onClick={handleAddToCart} className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded flex items-center">
             <FaCartPlus className="mr-2" /> Add to Cart
           </button>
           <button className="bg-black hover:bg-gray-800 text-white py-2 px-4 rounded">

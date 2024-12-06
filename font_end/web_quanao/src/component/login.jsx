@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
+import { fetchCartItems } from '../redux/card/cartService';
 
 import { loginThunk } from '../redux/user/authThunks';
 import { selectAuthStatus, selectAuthError } from '../redux/user/loginSelectors';
@@ -24,6 +25,7 @@ const LoginForm = () => {
     e.preventDefault();
     const result = await dispatch(loginThunk({ email, password }));
     if (result.meta.requestStatus === "fulfilled") {
+      dispatch(fetchCartItems());
       navigate("/shop");
     }
   };

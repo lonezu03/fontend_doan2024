@@ -7,7 +7,7 @@ export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async (_,{rejectWithValue}) => {
     try {
-      const response = await axios.get('http://localhost:5224/api/product/GetAllWithVariants'); // Thay đường dẫn API cho đúng
+      const response = await axios.get('http://localhost:5224/api/product/GetAllWithVariants'); 
       return response.data.$values;
     } catch (error) {
       return rejectWithValue(error.response.data);

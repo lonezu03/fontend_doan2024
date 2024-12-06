@@ -14,6 +14,7 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const { id } = useParams(); 
   const dispatch = useDispatch();
+  
 
   const cartState = useSelector((state) => state.cart);
 
@@ -22,15 +23,19 @@ const ProductDetails = () => {
 
   const url = `http://localhost:5224/api/product/${id}`;
   const handleAddToCart = () => {
-    console.log('Add to cart');
+    //console.log(selectedColor.name,selectedSize.name,product.gallery[0]);
     dispatch(
       addToCartThunk({
         variantid: product.id,
         quantity: parseInt(quantity,10),
         price: product.price,
+        image: product.gallery[0],
+        color: selectedColor.name,
+        size: selectedSize.name,
+        name: product.name
       })
     );
-    //console.log(quantity,product.id,product.price);
+    //console.log(quantity,product.id,product.price,product.name);
 
   };
   // Gọi API để lấy thông tin sản phẩm

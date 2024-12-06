@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { loginThunk } from '../redux/user/authThunks';
 import { selectAuthStatus, selectAuthError } from '../redux/user/loginSelectors';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import backgroundImage from '../assets/Poster/backgroud.jpg';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -29,59 +30,69 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 border rounded-md shadow-md bg-white">
-      <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">Login</h1>
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-            placeholder="Enter your email"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-          <div className="relative">
+    <div
+      className="min-h-screen flex items-center justify-center px-6 py-12"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      <div className="w-full max-w-3xl p-16 border rounded-md shadow-xl bg-white bg-opacity-95">
+        <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Login</h1>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-lg font-medium text-gray-700 mb-2">Email</label>
             <input
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-              placeholder="Enter your password"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-6 py-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300 text-lg"
+              placeholder="Enter your email"
               required
             />
+          </div>
+          <div>
+            <label className="block text-lg font-medium text-gray-700 mb-2">Password</label>
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-6 py-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300 text-lg"
+                placeholder="Enter your password"
+                required
+              />
+              <button
+                type="button"
+                onClick={toggleShowPassword}
+                className="absolute inset-y-0 right-4 flex items-center text-gray-600 hover:text-gray-800"
+              >
+                {showPassword ? <AiFillEyeInvisible size={24} /> : <AiFillEye size={24} />}
+              </button>
+            </div>
+          </div>
+          <div className="flex justify-end">
             <button
               type="button"
-              onClick={toggleShowPassword}
-              className="absolute inset-y-0 right-3 flex items-center text-gray-600 hover:text-gray-800"
+              className="text-lg text-blue-500 hover:underline"
             >
-              {showPassword ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
+              Forgot Password?
             </button>
           </div>
-        </div>
-        <div className="flex justify-end">
           <button
-            type="button"
-            className="text-sm text-blue-500 hover:underline"
+            type="submit"
+            className="w-full bg-blue-500 text-white py-3 rounded-lg text-lg hover:bg-blue-600 transition"
+            disabled={status === 'loading'}
           >
-            Forgot Password?
+            {status === 'loading' ? 'Logging in...' : 'Login'}
           </button>
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
-          disabled={status === 'loading'}
-        >
-          {status === 'loading' ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
-      {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
+        </form>
+        {error && <p className="text-red-500 mt-6 text-center text-lg">{error}</p>}
+      </div>
     </div>
   );
 };
 
-export default LoginForm;
+export default LoginForm;  

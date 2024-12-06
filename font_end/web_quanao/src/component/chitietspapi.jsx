@@ -12,7 +12,7 @@ const ProductDetails = () => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const { id } = useParams(); 
+  const { id } = useParams();
   const dispatch = useDispatch();
 
   const cartState = useSelector((state) => state.cart);
@@ -26,7 +26,7 @@ const ProductDetails = () => {
     dispatch(
       addToCartThunk({
         variantid: product.id,
-        quantity: parseInt(quantity,10),
+        quantity: parseInt(quantity, 10),
         price: product.price,
       })
     );
@@ -95,52 +95,53 @@ const ProductDetails = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="container mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-8 bg-white shadow-lg rounded-lg">
       {/* Hình ảnh sản phẩm */}
-      <div className="image-container">
+      <div className="image-container flex flex-col items-center border-r border-gray-200 pr-6">
         <img
           src={product.gallery[0]}
           alt={product.name}
-          className="rounded-lg shadow-lg w-full"
+          className="rounded-lg shadow-lg w-full object-cover"
         />
-        <div className="flex space-x-4 mt-4 w-16 h-16">
+        <div className="flex space-x-2 mt-4">
           {product.gallery.map((image, index) => (
             <img
               key={index}
               src={image}
               alt={`Gallery ${index + 1}`}
-              className="w-16 h-16 max-w-full max-h-full object-cover border border-gray-300 rounded-lg cursor-pointer"
-              />
+              className="w-16 h-16 object-cover border border-gray-300 rounded-md cursor-pointer"
+            />
           ))}
         </div>
       </div>
 
       {/* Thông tin sản phẩm */}
-      <div className="product-info">
-        <h1 className="text-3xl font-bold">{product.name}</h1>
-        <p className="text-xl text-gray-800 font-bold my-4">${product.price}</p>
-        <p className="text-gray-600">{product.description}</p>
+      <div className="product-info space-y-6">
+        {/* Tên sản phẩm */}
+        <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+        <p className="text-2xl text-yellow-600 font-bold">${product.price}</p>
+        <p className="text-gray-700 leading-relaxed">{product.description}</p>
 
         {/* Màu sắc */}
-        <div className="mt-4">
-          <h3 className="font-bold mb-2">Color</h3>
-          <div className="flex space-x-2">
+        <div>
+          <h3 className="font-semibold text-gray-800 mb-2">Color</h3>
+          <div className="flex items-center space-x-2">
             {product.colors.map((color) => (
               <button
                 key={color.id}
                 onClick={() => handleColorChange(color)}
-                className={`w-8 h-8 rounded-full ${
-                  selectedColor === color ? "ring-2 ring-blue-500" : ""
-                }`}
+                className={`w-10 h-10 rounded-full ${selectedColor === color ? "ring-2 ring-blue-500" : ""
+                  }`}
                 style={{ backgroundColor: color.name.toLowerCase() }}
               ></button>
             ))}
           </div>
         </div>
 
+
         {/* Kích thước */}
-        <div className="mt-4">
-          <h3 className="font-bold mb-2">Size</h3>
+        <div>
+          <h3 className="font-semibold text-gray-800 mb-2">Size</h3>
           <select
             value={selectedSize?.name}
             onChange={(e) =>
@@ -148,7 +149,7 @@ const ProductDetails = () => {
                 product.sizes.find((size) => size.name === e.target.value)
               )
             }
-            className="p-2 border border-gray-300 rounded-lg"
+            className="p-2 border border-gray-300 rounded-lg w-full"
           >
             {product.sizes.map((size) => (
               <option key={size.id} value={size.name}>
@@ -159,47 +160,54 @@ const ProductDetails = () => {
         </div>
 
         {/* Số lượng */}
-        <div className="mt-4">
-          <h3 className="font-bold mb-2">Quantity</h3>
-          <div className="flex items-center space-x-2">
+        <div>
+          <h3 className="font-semibold text-gray-800 mb-2">Quantity</h3>
+          <div className="flex items-center space-x-4">
             <button
               onClick={() => handleQuantityChange("decrement")}
-              className="px-2 py-1 border rounded"
+              className="px-3 py-1 border rounded text-gray-700 hover:bg-gray-200"
             >
               -
             </button>
-            <span>{quantity}</span>
+            <span className="text-lg font-medium">{quantity}</span>
             <button
               onClick={() => handleQuantityChange("increment")}
-              className="px-2 py-1 border rounded"
+              className="px-3 py-1 border rounded text-gray-700 hover:bg-gray-200"
             >
               +
             </button>
           </div>
         </div>
-         {/* Nút Thêm vào giỏ hàng và Mua ngay */}
-         <div className="mt-6 flex space-x-4">
-          <button onClick={handleAddToCart} className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded flex items-center">
-            <FaCartPlus className="mr-2" /> Add to Cart
+
+        {/* Hành động */}
+        <div className="space-y-4">
+          <button
+            onClick={handleAddToCart}
+            className="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg flex justify-center items-center space-x-2"
+          >
+            <FaCartPlus />
+            <span>Add to Cart</span>
           </button>
-          <button className="bg-black hover:bg-gray-800 text-white py-2 px-4 rounded">
+          <button className="w-full bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-lg">
             Buy Now
           </button>
         </div>
 
         {/* Tùy chọn thêm */}
-        <div className="mt-4 flex space-x-4">
-          <button className="text-gray-500 flex items-center">
-            <FaHeart className="mr-1" /> Favorite
+        <div className="flex space-x-6 pt-4 border-t border-gray-200">
+          <button className="text-gray-500 flex items-center hover:text-red-500">
+            <FaHeart className="mr-1" />
+            Favorite
           </button>
-          <button className="text-gray-500 flex items-center">
-            <FaShareAlt className="mr-1" /> Share
+          <button className="text-gray-500 flex items-center hover:text-blue-500">
+            <FaShareAlt className="mr-1" />
+            Share
           </button>
+
         </div>
       </div>
     </div>
   );
-  
 };
 
 

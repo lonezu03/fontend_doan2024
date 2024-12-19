@@ -23,13 +23,13 @@ const ProductDetails = () => {
 
   const url = `http://localhost:5224/api/product/${id}`;
   const handleAddToCart = () => {
-    //console.log(selectedColor.name,selectedSize.name,product.gallery[0]);
+    console.log(selectedColor.name,selectedSize.name,product.gallery);
     dispatch(
       addToCartThunk({
         variantid: product.id,
         quantity: parseInt(quantity,10),
         price: product.price,
-        image: product.gallery[0],
+        image: product.gallery,
         color: selectedColor.name,
         size: selectedSize.name,
         name: product.name
@@ -61,7 +61,7 @@ const ProductDetails = () => {
             id: size.id,
             name: size.name,
           })),
-          gallery: data.images?.$values.map((image) => image.url),
+          gallery: data.image,
           description: data.description?.content || "No description available",
           stock: 50, // Dữ liệu giả định, cập nhật nếu API trả về giá trị này
         };
@@ -104,19 +104,15 @@ const ProductDetails = () => {
       {/* Hình ảnh sản phẩm */}
       <div className="image-container">
         <img
-          src={product.gallery[0]}
+          src={product.gallery}
           alt={product.name}
           className="rounded-lg shadow-lg w-full"
         />
         <div className="flex space-x-4 mt-4 w-16 h-16">
-          {product.gallery.map((image, index) => (
             <img
-              key={index}
-              src={image}
-              alt={`Gallery ${index + 1}`}
+              src={product.gallery}
               className="w-16 h-16 max-w-full max-h-full object-cover border border-gray-300 rounded-lg cursor-pointer"
               />
-          ))}
         </div>
       </div>
 

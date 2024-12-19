@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 const ProductCard = ({ product }) => {
   const colors = product.colors?.$values || [];
   const sizes = product.sizes?.$values || [];
-  const images = product.images?.$values || [];
+  const images = product.image || "";
   const navigate = useNavigate();
   //console.log(product)
   // Hàm xử lý hình ảnh
@@ -23,7 +23,7 @@ const ProductCard = ({ product }) => {
       <div className="my-4">
         {images.length > 0 ? (
           <img
-            src={images[0].url} // Chuyển đổi Base64 thành URL hình ảnh
+            src={images} // Chuyển đổi Base64 thành URL hình ảnh
             alt={product.name}
             className="w-full h-auto rounded-lg"
           />

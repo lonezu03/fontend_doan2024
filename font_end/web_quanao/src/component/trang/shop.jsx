@@ -13,11 +13,7 @@ function shop() {
             <div className='   left-4  '><Filter /></div>
 
             <div className='  top-4'><ProductCardList /></div>
-            <div className='flex'>
-                <div className='  top-4'><ListSP /></div>
-                <div className='  top-4'><ListSP /></div>
-                <div className='  top-4'><ListSP /></div>
-            </div>
+            
 
             <div className='  bottom-0'><Footer2 /></div>
         </div>

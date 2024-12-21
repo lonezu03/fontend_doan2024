@@ -16,7 +16,7 @@ function ChitietSPComponent() {
             <div className="h-[120px]">
                 <Menu />
             </div>
-            <Chitietspapi  /> {/* Truyền id vào Chitietspapi */}
+            <Chitietspapi /> {/* Truyền id vào Chitietspapi */}
             <Description />
             <Footer2 />
         </>

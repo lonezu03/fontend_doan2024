@@ -1,7 +1,7 @@
 import Menu from '../menu.jsx'
 import Giohang from '../giohang.jsx'
+import Giohang2 from '../giohangapi.jsx'
 import Footer2 from '../footer2.jsx'
-
 
 const giohanglon = () => {
   const cartItems = [
@@ -41,6 +41,7 @@ const giohanglon = () => {
     <div>
       <div className=' h-[120px] '><Menu /></div>
       <div><Giohang cartItems={cartItems} /></div>
+      <Giohang2 />
       <Footer2 />
     </div>
   )

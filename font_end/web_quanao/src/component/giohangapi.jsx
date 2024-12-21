@@ -187,4 +187,3 @@ const Cart = () => {
 };
 
 export default Cart;
-//Fix all 

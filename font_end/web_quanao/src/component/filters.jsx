@@ -81,6 +81,7 @@ const dispatch=useDispatch();
       category: "",
       price: null,
     });
+    window.location.reload(); // Làm mới trang
   };
   
   // Hàm để bật/tắt bộ lọc
@@ -121,7 +122,7 @@ const dispatch=useDispatch();
           {/* Filter theo Gender */}
           <div className="mb-4">
             <h3 className="font-bold">Gender</h3>
-            {['Male', 'Female', 'Kids'].map((gender) => (
+            {['Male', 'Female', 'Unisex'].map((gender) => (
               <div key={gender}>
                 <label className="inline-flex items-center">
                   <input
@@ -139,7 +140,7 @@ const dispatch=useDispatch();
           {/* Filter theo Category */}
           <div className="mb-4">
             <h3 className="font-bold">Category</h3>
-            {['All', 'Shose', 'Apparel', 'T-Shirts'].map((category) => (
+            {['Áo', 'Áo khoác', 'Quần'].map((category) => (
               <div key={category}>
                 <label className="inline-flex items-center">
                   <input
@@ -154,7 +155,7 @@ const dispatch=useDispatch();
             ))}
           </div>
 
-          {/* Filter theo Color */}
+          {/* Filter theo Color
           <div className="mb-4">
             <h3 className="font-bold">Color</h3>
             {['Red', 'Blue', 'Green', 'Yellow', 'Pink', 'Black', 'White'].map(
@@ -172,12 +173,12 @@ const dispatch=useDispatch();
                 </div>
               )
             )}
-          </div>
+          </div> */}
 
           {/* Filter theo Price */}
           <div className="mb-4">
             <h3 className="font-bold">Price</h3>
-            <input
+            {/* <input
               type="range"
               min="0"
               max="200"
@@ -186,20 +187,21 @@ const dispatch=useDispatch();
                 handleSelect('price', { min: parseInt(e.target.value) })
               }
             />
-            <span className="ml-2">Min: ${selectedFilters.price.min}</span>
+            <span className="ml-2">Min: ${selectedFilters.price.min}</span> */}
             <input
-              type="range"
-              min="0"
-              max="200"
-              value={selectedFilters.price.max}
-              onChange={(e) =>
-                handleSelect('price', { max: parseInt(e.target.value) })
-              }
-            />
-            <span className="ml-2">Max: ${selectedFilters.price.max}</span>
+            type="range"
+            min="0"
+            max="2000000"
+            value={selectedFilters.price?.max || 2000000} // Giá trị mặc định
+            onChange={(e) =>
+              handleSelect('price', { max: parseInt(e.target.value, 10) })
+            }
+          />
+            <span className="ml-2">Max: ${selectedFilters.price?.max || 2000000}</span>
+
           </div>
 
-          {/* Filter theo Rating */}
+          {/* Filter theo Rating
           <div className="mb-4">
             <h3 className="font-bold">Rating</h3>
             {[1, 2, 3, 4].map((star) => (
@@ -216,7 +218,7 @@ const dispatch=useDispatch();
                 </label>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       )}
 

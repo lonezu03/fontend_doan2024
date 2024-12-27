@@ -27,8 +27,9 @@ const productSlice = createSlice({
       state.filter.category = action.payload;
     },
     changefilerprice: (state, action) => {
-      state.filter.price = action.payload;
+      state.filter.price = { ...state.filter.price, ...action.payload }; // Cập nhật thuộc tính max/min
     },
+    
     // Xóa bộ lọc
     removeFilter: (state, action) => {
       const { filterType } = action.payload;

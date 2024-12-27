@@ -36,7 +36,10 @@ const ProductCardList = () => {
     <div>
       {/* Hiển thị sản phẩm trong lưới */}
       <div className="grid grid-cols-4 gap-4 justify-items-center">
-        {currentProducts?.filter((el) => el?.category.name.includes(filter.category) ).filter((el) => el?.gendero?.name.includes(filter.gender) ).map((product) => (
+        {currentProducts?.filter((el) => el?.category.name.includes(filter.category))
+          .filter((el) => el?.gendero?.name.includes(filter.gender))
+          .filter((el) => filter.price?.max ? el?.price <= filter.price.max : true) // Lọc theo max
+          .map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>

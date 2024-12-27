@@ -158,7 +158,7 @@ const ProductDetails = () => {
       </div>
 
 
-        <p className="text-xl text-gray-800 font-bold my-4">${product.price}</p>
+        <p className="text-xl text-gray-800 font-bold my-4">{product.price} đ</p>
         <p className="text-gray-600">{product.description}</p>
 
         {/* Màu sắc */}

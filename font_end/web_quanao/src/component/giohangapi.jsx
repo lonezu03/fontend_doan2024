@@ -15,13 +15,17 @@ const Cart = () => {
   const cartItems = useSelector(selectCartItems);
   const loading = useSelector(selectCartLoading);
   const error = useSelector(selectCartError);
-  console.log(cartItems);
+ //console.log(cartItems);
   useEffect(() => {
     dispatch(fetchCartItems());
   }, [dispatch]);
 
   if (loading) return <p>Loading...</p>;
+  if (!cartItems || cartItems.length === 0) {
+    return <h2>Giỏ hàng của bạn đang trống vui lòng mua sắm thêm.</h2>;
+  }
   if (error) return <p>Error: {error}</p>;
+ // Kiểm tra nếu không có sản phẩm trong giỏ hàng
 
 
   const handleQuantityChange = (id, type) => {
@@ -74,7 +78,7 @@ const Cart = () => {
       dispatch(removeFromCartThunk(id))
         .unwrap()
         .then(() => {
-          toast.success("Sản phẩm xóa khỏi giỏ hàng!", {
+          toast.success("Sản phẩm đã được xóa khỏi giỏ hàng!", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: true,

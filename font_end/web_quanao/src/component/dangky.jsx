@@ -5,6 +5,8 @@ import { registerUser } from '../redux/user/authThunks';
 import backgroundImage from '../assets/Poster/backgroud.jpg';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
     username: '',
@@ -27,12 +29,32 @@ const RegisterForm = () => {
       [id]: value,
     });
   };
-
+  //const [temperror,settemperror]=useState(error) ;
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerUser(formData));
-    navigate('/dangnhap'); // Điều hướng về trang đăng nhập
-
+    dispatch(registerUser(formData))
+      .unwrap()
+      .then(() => {
+        toast.success("Đã đăng ký tài khoản thành công!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        navigate("/dangnhap"); // Điều hướng về trang đăng nhập
+      })
+      .catch((err) => {
+        toast.error(err || "Email đã tồn tại vui lòng nhập lại!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      });
   };
 
   const handleBackToLogin = () => {
@@ -138,7 +160,7 @@ const RegisterForm = () => {
             </button>
           </div>
         </form>
-      </div>
+      </div><ToastContainer />
     </div>
   );
 };

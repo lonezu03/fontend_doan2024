@@ -7,6 +7,8 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Menu as MuiMenu, MenuItem, Button } from "@mui/material";
 import { getLoginStatus,setLoginStatus   } from "../redux/user/loginSelectors";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MenuList = [
     { id: 1, name: "Home", link: "/" },
@@ -35,8 +37,15 @@ const Navbar = () => {
         if(islogin==true)
             navigate("/giohang");
         else if(islogin==false){
-            alert("Vui lòng đăng nhập để dùng chức năng");
-        }
+toast.error("Vui lòng đăng nhập để dùng chức năng!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });        }
     }
     const  logoclick=()=>{
         
@@ -144,7 +153,7 @@ const Navbar = () => {
                         </MuiMenu>
                     </li>
                 </ul>
-            </div>
+            </div><ToastContainer />
         </div>
     );
 };

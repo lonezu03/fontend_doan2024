@@ -14,12 +14,18 @@ const ProductCardList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12; // 4 sản phẩm x 3 hàng
 
-  // Tính toán sản phẩm hiển thị
+  // Lọc sản phẩm trước khi phân trang
+  const filteredProducts = items
+    .filter((el) => el?.category.name.includes(filter.category))
+    .filter((el) => el?.gendero?.name.includes(filter.gender))
+    .filter((el) => filter.price?.max ? el?.price <= filter.price.max : true); // Lọc theo max
+
+  // Tính toán sản phẩm hiển thị sau khi lọc
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = items.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  const totalPages = Math.ceil(items.length / productsPerPage);
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -36,10 +42,7 @@ const ProductCardList = () => {
     <div>
       {/* Hiển thị sản phẩm trong lưới */}
       <div className="grid grid-cols-4 gap-4 justify-items-center">
-        {currentProducts?.filter((el) => el?.category.name.includes(filter.category))
-          .filter((el) => el?.gendero?.name.includes(filter.gender))
-          .filter((el) => filter.price?.max ? el?.price <= filter.price.max : true) // Lọc theo max
-          .map((product) => (
+        {currentProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>

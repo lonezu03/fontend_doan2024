@@ -8,6 +8,7 @@ import Dangnhap from './component/trang/dangnhap.jsx';
 import ChitietSP from './component/trang/chitiet_sp.jsx';
 import Giohanglon from './component/trang/giohanglon.jsx';
 import Home from './component/trang/home.jsx';
+import New from './component/trang/new.jsx'
 function App() {
 
 
@@ -23,7 +24,9 @@ function App() {
         <Route path="/giohang" element={<Giohanglon />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/footer2" element={<Shop />} />
+        <Route path="/New" element={<New />} />
         <Route path="/" element={<Home />} />
+
       </Routes>
 
     </Router>

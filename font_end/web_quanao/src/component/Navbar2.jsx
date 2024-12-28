@@ -15,7 +15,7 @@ const MenuList = [
     { id: 2, name: "Shop", link: "/shop" },
     { id: 3, name: "About", link: "/aboutus" },
     { id: 4, name: "Contact", link: "/#0" },
-    { id: 5, name: "New", link: "/#0" },
+    { id: 5, name: "New", link: "/New" },
 ];
 
 const TrendingItems = [

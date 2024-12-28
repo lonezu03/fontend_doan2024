@@ -20,26 +20,23 @@ const dispatch=useDispatch();
       let newValue;
   
       if (type === 'price') {
-        // Xử lý trường hợp đặc biệt cho `price`
+        // Xử lý giá
         newValue = { ...prev.price, ...value };
         dispatch(ProductSlice.actions.changefilerprice(newValue));
       } else if (prev[type]?.includes(value)) {
-        // Nếu giá trị đã tồn tại, xóa nó khỏi bộ lọc
-        newValue = prev[type].filter((item) => item !== value);
-  
-        // Dispatch hành động xóa bộ lọc
+        // Nếu giá trị đã tồn tại, xóa nó
+        newValue = [];
         dispatch(removeFilterAction(type));
       } else {
-        // Nếu giá trị chưa tồn tại, thêm nó vào bộ lọc
-        newValue = [...(prev[type] || []), value];
-  
-        // Dispatch hành động thêm bộ lọc
+        // Nếu giá trị chưa tồn tại, chỉ cho phép chọn giá trị mới
+        newValue = [value];
         dispatch(applyFilterAction(type, value));
       }
   
       return { ...prev, [type]: newValue };
     });
   };
+  
   
   // Hành động xóa bộ lọc
   const removeFilterAction = (type) => {

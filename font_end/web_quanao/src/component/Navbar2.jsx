@@ -5,7 +5,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Menu as MuiMenu, MenuItem, Button } from "@mui/material";
-import { getLoginStatus,setLoginStatus   } from "../redux/user/loginSelectors";
+import { getLoginStatus, setLoginStatus } from "../redux/user/loginSelectors";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,7 +14,7 @@ const MenuList = [
     { id: 1, name: "Home", link: "/" },
     { id: 2, name: "Shop", link: "/shop" },
     { id: 3, name: "About", link: "/aboutus" },
-    { id: 4, name: "Contact", link: "/#0" },
+    { id: 4, name: "Contact", link: "/Contract" },
     { id: 5, name: "New", link: "/New" },
 ];
 
@@ -26,37 +26,38 @@ const TrendingItems = [
 
 const Navbar = () => {
     const navigate = useNavigate();
-    const [islogin,setislogin] = useState(getLoginStatus);
+    const [islogin, setislogin] = useState(getLoginStatus);
     const [anchorEl, setAnchorEl] = useState(null);
     const isLoggedIn = getLoginStatus(); // Lấy trạng thái đăng nhập từ localStorage
     console.log(isLoggedIn);
     const handleDropdownOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
-    const  orderClick=()=>{
-        if(islogin==true)
+    const orderClick = () => {
+        if (islogin == true)
             navigate("/giohang");
-        else if(islogin==false){
-toast.error("Vui lòng đăng nhập để dùng chức năng!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });        }
+        else if (islogin == false) {
+            toast.error("Vui lòng đăng nhập để dùng chức năng!", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
     }
-    const  logoclick=()=>{
-        
-            navigate("/");
-       
+    const logoclick = () => {
+
+        navigate("/");
+
     }
     const handleLogout = () => {
         localStorage.setItem("isLoggedIn", JSON.stringify(false)); // Thay đổi trạng thái thành false
         setLoginStatus(false); // Cập nhật trạng thái trong giao diện
         window.location.reload(); // Tùy chọn: Làm mới trang để đồng bộ trạng thái
-      };
+    };
     const handleDropdownClose = () => {
         setAnchorEl(null);
     };
@@ -83,23 +84,23 @@ toast.error("Vui lòng đăng nhập để dùng chức năng!", {
                             />
                         </div>
                         {!isLoggedIn && (
-        <button
-          onClick={() => (window.location.href = "/dangnhap")} // Điều hướng đến trang đăng nhập
-          className="bg-white text-primary border border-primary py-1 px-4 rounded-full transition-all duration-200 hover:bg-primary hover:text-white"
-        >
-          Login
-        </button>
-      )}
+                            <button
+                                onClick={() => (window.location.href = "/dangnhap")} // Điều hướng đến trang đăng nhập
+                                className="bg-white text-primary border border-primary py-1 px-4 rounded-full transition-all duration-200 hover:bg-primary hover:text-white"
+                            >
+                                Login
+                            </button>
+                        )}
 
-      {/* Nút Logout */}
-      {isLoggedIn && (
-        <button
-          onClick={handleLogout} // Gọi hàm xử lý đăng xuất
-          className="bg-red-500 text-white py-1 px-4 rounded-full transition-all duration-200 hover:bg-red-700"
-        >
-          Logout
-        </button>
-      )}
+                        {/* Nút Logout */}
+                        {isLoggedIn && (
+                            <button
+                                onClick={handleLogout} // Gọi hàm xử lý đăng xuất
+                                className="bg-red-500 text-white py-1 px-4 rounded-full transition-all duration-200 hover:bg-red-700"
+                            >
+                                Logout
+                            </button>
+                        )}
                         <button
                             onClick={() => orderClick()}
                             className="bg-gradient-to-r from-primary to-secondary transition-all duration-200 text-white py-1 px-4 rounded-full flex items-center gap-3 group"

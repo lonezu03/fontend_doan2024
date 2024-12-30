@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts } from '../redux/products/productThunks';
 import ProductCard from './productcard';
-import { filterproduct } from "../redux/products/productSelectors";
+import { filterproduct, } from "../redux/products/productSelectors";
 
 const ProductCardList = () => {
   const dispatch = useDispatch();
   const filter = useSelector(filterproduct);
 
   const { items, status, error } = useSelector((state) => state.products);
-
+  const search = useSelector((state) => state.products.search); // Lấy từ khóa tìm kiếm
+  console.log(search);
   // Phân trang
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12; // 4 sản phẩm x 3 hàng
@@ -18,7 +19,8 @@ const ProductCardList = () => {
   const filteredProducts = items
     .filter((el) => el?.category.name.includes(filter.category))
     .filter((el) => el?.gendero?.name.includes(filter.gender))
-    .filter((el) => filter.price?.max ? el?.price <= filter.price.max : true); // Lọc theo max
+    .filter((el) => filter.price?.max ? el?.price <= filter.price.max : true) // Lọc theo max
+    .filter((el) => el?.name.toLowerCase().includes(search.toLowerCase())); // Lọc theo từ khóa tìm kiếm
 
   // Tính toán sản phẩm hiển thị sau khi lọc
   const indexOfLastProduct = currentPage * productsPerPage;

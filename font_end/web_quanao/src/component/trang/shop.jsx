@@ -22,7 +22,7 @@ function shop() {
         <div className="flex flex-col gap-6 bg-gray-50">
             {/* Header */}
                 <Menu />
-            <Banner />
+            {/* <Banner /> */}
 
             {/* Bộ lọc */}
             <section className="container mx-auto p-4">

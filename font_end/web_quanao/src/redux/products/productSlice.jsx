@@ -10,11 +10,12 @@ const productSlice = createSlice({
       gender: "",
       color: "",
       category: "", 
-      price: null     
+      price: null,
     },
-    items: [], // Danh sách sản phẩm
-    status: 'idle', // idle | loading | succeeded | failed
-    error: null, // Lỗi nếu có
+    search: "", // Thêm thuộc tính search
+    items: [],
+    status: 'idle',
+    error: null,
   },
   reducers: {
     changefilergender: (state, action) => {
@@ -27,13 +28,13 @@ const productSlice = createSlice({
       state.filter.category = action.payload;
     },
     changefilerprice: (state, action) => {
-      state.filter.price = { ...state.filter.price, ...action.payload }; // Cập nhật thuộc tính max/min
+      state.filter.price = { ...state.filter.price, ...action.payload };
     },
     
     // Xóa bộ lọc
     removeFilter: (state, action) => {
       const { filterType } = action.payload;
-      state.filter[filterType] = filterType === "price" ? null : ""; // Đặt giá trị mặc định
+      state.filter[filterType] = filterType === "price" ? null : "";
     },
     // Reset toàn bộ bộ lọc
     resetFilters: (state) => {
@@ -43,6 +44,9 @@ const productSlice = createSlice({
         category: "",
         price: null,
       };
+    },
+    setSearchKeyword: (state, action) => {
+      state.search = action.payload; // Lưu từ khóa tìm kiếm
     },
   },
   extraReducers: (builder) => {
@@ -63,6 +67,7 @@ const productSlice = createSlice({
 });
 
 export const ProductSlice = productSlice; // Export slice
-export const { changefilergender, changefilercolor, changefilercategory, changefilerprice, removeFilter, resetFilters } = productSlice.actions;
+export const { changefilergender, changefilercolor, changefilercategory, changefilerprice, removeFilter, resetFilters,setSearchKeyword } = productSlice.actions;
+
 
 export default productSlice.reducer;

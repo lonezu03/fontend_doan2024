@@ -9,6 +9,8 @@ import { getLoginStatus,setLoginStatus   } from "../redux/user/loginSelectors";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from 'react-redux';
+import  { ProductSlice }   from '../redux/products/productSlice';
 
 const MenuList = [
     { id: 1, name: "Home", link: "/" },
@@ -33,6 +35,17 @@ const Navbar = () => {
     const handleDropdownOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
+//tim kiem
+const [search, setSearch] = useState("");
+const dispatch = useDispatch();
+
+const handleSearch = (e) => {
+  setSearch(e.target.value);
+  dispatch(ProductSlice.actions.setSearchKeyword(e.target.value)); // Cập nhật từ khóa vào Redux store
+};
+
+
+
     const  orderClick=()=>{
         if(islogin==true)
             navigate("/giohang");
@@ -75,6 +88,8 @@ toast.error("Vui lòng đăng nhập để dùng chức năng!", {
                         <div className="relative group hidden sm:block">
                             <input
                                 type="text"
+                                value={search}
+                                onChange={handleSearch}
                                 placeholder="search"
                                 className="w-[200px] sm:w-[200px] group-hover:w-[300px] transition-all duration-300 rounded-full border border-gray-300 px-2 py-1 focus:outline-none focus:border-1 focus:border-primary"
                             />

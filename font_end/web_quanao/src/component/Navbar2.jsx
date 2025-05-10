@@ -26,7 +26,7 @@ const TrendingItems = [
     { id: 3, name: "Best Reviews", link: "/#3" },
 ];
 
-const Navbar = () => {
+const Navbar2 = () => {
     const navigate = useNavigate();
     const [islogin, setislogin] = useState(getLoginStatus);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -46,14 +46,10 @@ const handleSearch = (e) => {
 
 
 
-    const  orderClick=()=>{
-        if(islogin==true)
-
     const orderClick = () => {
-        if (islogin == true)
-
+        if (islogin === true) {
             navigate("/giohang");
-        else if (islogin == false) {
+        } else if (islogin === false) {
             toast.error("Vui lòng đăng nhập để dùng chức năng!", {
                 position: "top-right",
                 autoClose: 3000,
@@ -64,7 +60,7 @@ const handleSearch = (e) => {
                 progress: undefined,
             });
         }
-    }
+    };
     const logoclick = () => {
 
         navigate("/");
@@ -178,4 +174,4 @@ const handleSearch = (e) => {
     );
 };
 
-export default Navbar;
+export default Navbar2;
